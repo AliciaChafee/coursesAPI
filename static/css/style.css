@@ -10,3 +10,8 @@ li > a {
 li > a:hover {
 	color: #2f8d7b;
 }
+
+th {
+	color: #2f8d7b;
+	background-color: #000;
+}
