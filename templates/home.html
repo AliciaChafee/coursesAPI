@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <h1 class="text-center mb-5">Alicia's Entertainment Database</h1>
+
+ 
+    
+    <div class="mx-auto my-5" style="width: 300px;">
+      <button type="button" class="btn btn-dark" id="addMovie">Add a new movie</button>
+      <button type="button" class="btn btn-dark" id="addBook">Add a new book</button>
+    </div>
+    
+
+    <div id="newMovieForm" class="mx-auto" style="width: 500px;">
+      <form action="">
+        <div class="form-group">
+          <label for="newMovieTitle">Movie Title:</label>
+          <input type="text" class="form-control" id="newMovieTitle" aria-describedby="newTitle">
+        </div>
+
+        <div class="form-group">
+          <label for="director">Director:</label>
+          <input type="text" class="form-control" id="director" aria-describedby="movieDirector">
+        </div>
+
+        <div class="form-group">
+          <label for="yearReleased">Year Released:</label>
+          <input type="text" class="form-control" id="yearReleased" aria-describedby="movieYear">
+        </div>
+
+        <button type="submit" class="btn btn-dark" id="submitMovie">Add Movie</button>
+
+    	</form>
+    	
+    </div>
+
+
+    <div id="newBookForm" class="mx-auto" style="width: 500px;">
+      <form action="">
+        <div class="form-group">
+          <label for="newBookTitle">Book Title:</label>
+          <input type="text" class="form-control" id="newBookTitle" aria-describedby="newTitle" required>
+        </div>
+
+        <div class="form-group">
+          <label for="author">Author:</label>
+          <input type="text" class="form-control" id="author" aria-describedby="bookAuthor" required>
+        </div>
+
+        <div class="form-group">
+          <label for="yearPublished">Year Published:</label>
+          <input type="text" class="form-control" id="yearPublished" aria-describedby="bookYear" required>
+        </div>
+
+        <button type="button" class="btn btn-dark" id="submitBook">Add Book</button>
+
+      </form>
+      
+    </div>
+
+    <div class="mx-auto my-5" style="width: 500px;">
+      <div class="alert alert-success" role="alert" id='book-added-response'>
+        New Book Added to Library!
+      </div>
+
+      <div class="alert alert-success" role="alert" id='movie-added-response'>
+        New Movie Added to Library!
+      </div>
+    </div>
+
+
+{% endblock %}

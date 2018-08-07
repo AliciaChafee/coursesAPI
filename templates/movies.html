@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <h1 class="text-center mb-5">Movies</h1>
+
+
+
+      <div class="container moviePosters">
+        <div class="row">
+          <div class="col-sm">
+            <img src="{{ url_for('static', filename='img/theMummy.jpg') }}">
+          </div>
+          <div class="col-sm">
+            <img src="{{ url_for('static', filename='img/jawsPoster.jpg') }}">
+          </div>
+          <div class="col-sm">
+            <img src="{{ url_for('static', filename='img/rearWindow.jpeg') }}">
+          </div>
+          <div class="col-sm">
+            <img src="{{ url_for('static', filename='img/indianaJones.jpeg') }}">
+          </div>
+      </div>
+    </div>
+
+
+    <div class="input-group mb-3 w-50 mx-auto my-5">
+      <input type="text" class="form-control" placeholder="Enter a title" aria-label="Enter a title" aria-describedby="button-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-outline-dark" type="button" id="button-addon2 search-movies">Search Movies</button>
+      </div>
+    </div>
+
+    <div class="mx-auto" style="width: 200px;">
+      <button type="button" class="btn btn-dark mb-5">View All Movies</button>
+    </div>
+
+
+{% endblock %}

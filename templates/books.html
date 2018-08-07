@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <h1 class="text-center mb-5">Books</h1>
+
+
+
+      <div class="container bookCovers">
+        <div class="row">
+          <div class="col-sm">
+            <img src="{{ url_for('static', filename='img/catch.jpg') }}">
+          </div>
+          <div class="col-sm">
+            <img src="{{ url_for('static', filename='img/prideAndprejudice.png') }}">
+          </div>
+          <div class="col-sm">
+            <img src="{{ url_for('static', filename='img/sherlock.jpg') }}">
+          </div>
+          <div class="col-sm">
+            <img src="{{ url_for('static', filename='img/catcherInRye.jpg') }}">
+          </div>
+      </div>
+
+    <div class="input-group mb-3 w-50 mx-auto my-5">
+      <input type="text" class="form-control" placeholder="Enter a title" aria-label="Enter a title" aria-describedby="button-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-outline-dark" type="button" id="button-addon2 search-books">Search Books</button>
+      </div>
+    </div>
+
+    <div class="mx-auto" style="width: 200px;">
+      <button type="button" class="btn btn-dark mb-5">View All Books</button>
+    </div>
+
+
+
+{% endblock %}
