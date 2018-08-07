@@ -52,7 +52,7 @@ def main_movie(title, director, released):
 	database = 'library.sql'
 	sql_create_movie_table = '''CREATE TABLE IF NOT EXISTS BOOKS (
 								ID PRIMARY KEY,
-								TITLE TEXT NOT NULL,
+								TITLE TEXT NOT NULL UNIQUE,
 								DIRECTOR TEXT NOT NULL,
 								RELEASED INT NOT NULL);'''
 	

@@ -21,22 +21,19 @@ $(document).ready(function() {
 		var bookAuthor = $('#author').val().toUpperCase();
 		var bookYear = $('#yearPublished').val();
 
-		console.log(bookTitle);
-		console.log(bookAuthor);
-		console.log(bookYear);
-
 		$.ajax({
 			data: { title : bookTitle, author: bookAuthor, year: bookYear },
-			type: 'POST',
+			type: 'GET',
 			url: 'addBook',
 			dataType: 'json',
 			success: function(response){
+				console.log("Success adding book");
 				$('#book-added-response').show();
 
 
 			},
-			error: function(response) {
-				console.log(response);
+			error: function(error) {
+				console.log("Error adding book: " + error);
 			}
 		});
 		

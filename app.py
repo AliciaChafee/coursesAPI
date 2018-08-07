@@ -1,11 +1,9 @@
-from flask import Flask, jsonify, render_template, request, json, url_for
-import database
+from flask import Flask, render_template, jsonify, json, request, url_for
+
 
 
 
 app = Flask(__name__)
-
-
 
 
 @app.route('/home')
