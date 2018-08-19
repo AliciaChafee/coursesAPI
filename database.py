@@ -29,7 +29,7 @@ def addMovie(conn, log):
 	conn.commit()
 
 def allBooks():
-	database = 'library.sql'
+	database = 'library.db'
 	conn = create_connection(database)
 	cur = conn.cursor()
 	if conn is not None:
