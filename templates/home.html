@@ -13,20 +13,20 @@
     
 
     <div id="newMovieForm" class="mx-auto" style="width: 500px;">
-      <form action="">
+      <form action="{{ url_for('add_movie') }}" method = "POST">
         <div class="form-group">
           <label for="newMovieTitle">Movie Title:</label>
-          <input type="text" class="form-control" id="newMovieTitle" aria-describedby="newTitle" required>
+          <input type="text" class="form-control" id="newMovieTitle" aria-describedby="newTitle" required name="movieTitle">
         </div>
 
         <div class="form-group">
           <label for="director">Director:</label>
-          <input type="text" class="form-control" id="director" aria-describedby="movieDirector" required>
+          <input type="text" class="form-control" id="director" aria-describedby="movieDirector" required name="movieDirector">
         </div>
 
         <div class="form-group">
           <label for="yearReleased">Year Released:</label>
-          <input type="text" class="form-control" id="yearReleased" aria-describedby="movieYear" required>
+          <input type="text" class="form-control" id="yearReleased" aria-describedby="movieYear" required name="yearReleased">
         </div>
 
         <button type="submit" class="btn btn-dark" id="submitMovie">Add Movie</button>
@@ -37,20 +37,20 @@
 
 
     <div id="newBookForm" class="mx-auto" style="width: 500px;">
-      <form action="">
+      <form action="{{ url_for('add_book') }}" method = "POST">
         <div class="form-group">
           <label for="newBookTitle">Book Title:</label>
-          <input type="text" class="form-control" id="newBookTitle" aria-describedby="newTitle" required>
+          <input type="text" class="form-control" id="newBookTitle" aria-describedby="newTitle" required name="bookTitle">
         </div>
 
         <div class="form-group">
           <label for="author">Author:</label>
-          <input type="text" class="form-control" id="author" aria-describedby="bookAuthor" required>
+          <input type="text" class="form-control" id="author" aria-describedby="bookAuthor" required name="bookAuthor">
         </div>
 
         <div class="form-group">
           <label for="yearPublished">Year Published:</label>
-          <input type="text" class="form-control" id="yearPublished" aria-describedby="bookYear" required>
+          <input type="text" class="form-control" id="yearPublished" aria-describedby="bookYear" required name="bookPublished">
         </div>
 
         <button type="submit" class="btn btn-dark" id="submitBook">Add Book</button>
@@ -58,16 +58,17 @@
       </form>
       
     </div>
+    <div class="text-center">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
 
-    <div class="mx-auto my-5" style="width: 500px;">
-      <div class="alert alert-success" role="alert" id='book-added-response'>
-        New Book Added to Library!
-      </div>
+    {% for message in messages %}
+      <h3>{{ message }}</h3>
+    {% endfor %}
 
-      <div class="alert alert-success" role="alert" id='movie-added-response'>
-        New Movie Added to Library!
-      </div>
-    </div>
+    {% endif %}
+  {% endwith %}
+  </div>
 
 
 {% endblock %}

@@ -110,8 +110,11 @@ $(document).ready(function() {
 
 	// View all movies in library database
 
+	$("#movies-table").hide();
+
 	$("#viewMovies").on('click', function() {
 		$("#movies-body").empty();
+		$("#movies-table").toggle();
 		
 			$.ajax({
 				type: 'GET',

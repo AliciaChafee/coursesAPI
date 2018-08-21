@@ -1,9 +1,10 @@
 import sqlite3
 import json
 
-def create_connection(db_file):
+def create_connection():
+	database = 'library.db'
 	try:
-		conn = sqlite3.connect(db_file)
+		conn = sqlite3.connect(database)
 		return conn
 	except Error:
 		print(Error)
@@ -29,8 +30,7 @@ def addMovie(conn, log):
 	conn.commit()
 
 def allBooks():
-	database = 'library.db'
-	conn = create_connection(database)
+
 	cur = conn.cursor()
 	if conn is not None:
 		cur.execute('SELECT Title, Author, Published FROM BOOKS')
