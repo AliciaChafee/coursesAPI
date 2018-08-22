@@ -33,6 +33,14 @@ def all_books():
 	all_books = cursor.execute('SELECT *, rowid FROM books').fetchall()
 	return jsonify(all_books)
 
+@app.route('/v1/resources/books/all')
+def view_all_books():
+	conn = sqlite3.connect(database)
+	conn.row_factory = make_dict
+	cursor = conn.cursor()
+	all_books = cursor.execute('SELECT *, rowid FROM books').fetchall()
+	return jsonify(all_books)
+
 
 @app.route('/api/v1/resources/movies/all')
 def all_movies():
@@ -109,7 +117,7 @@ def get_movie():
 
 
 
-@app.route('/api/v1/resources/books/newbook', methods = ['POST', 'GET'])
+@app.route('/v1/resources/books/newbook', methods = ['POST', 'GET'])
 def add_book():
 	title = request.form['bookTitle']
 	author = request.form['bookAuthor']
@@ -123,7 +131,7 @@ def add_book():
 	return redirect(url_for('home'))
 	conn.close()
 
-@app.route('/api/v1/resources/movies/newmovie', methods = ['POST', 'GET'])
+@app.route('/v1/resources/movies/newmovie', methods = ['POST', 'GET'])
 def add_movie():
 	title = request.form['movieTitle']
 	director = request.form['movieDirector']
@@ -147,7 +155,7 @@ def moviesPage():
 	return render_template('movies.html')
 
 @app.route('/booksPage')
-def booksPageboo():
+def booksPage():
 	return render_template('books.html')
 
 @app.errorhandler(404)

@@ -56,17 +56,31 @@ $(document).ready(function() {
 
 		$("#books-body").empty();
 		$("#bookTableDiv").toggle();
+
 		
 			$.ajax({
 				type: 'GET',
-				url: 'books',
+				url: 'v1/resources/books/all',
 				dataType: 'json',
 				success: function(response){
-					console.log(response);
-					for(var i = 0; i < response.data.length; i++) {
-						console.log(response.data[i]);
+					td = "<td>";
+					etd = "</td>";
+					tr = "<tr>";
+					etr = "</tr>";
+
+					for (var i = 0; i < response.length; i++){
+						rows = tr;
+						rows += td + response[i].rowid + etd;
+						rows += td + response[i].title + etd;
+						rows += td + response[i].author + etd;
+						rows += td + response[i].published + etd;
+						rows += etr;
+						
+						$("#books-body").append(rows);
 					}
-					$("#books-body").append(response);
+
+
+
 				}
 			});
 	});
