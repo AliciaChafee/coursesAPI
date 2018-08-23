@@ -1,9 +1,10 @@
 import sqlite3
 import json
 
-def create_connection(db_file):
+def create_connection():
+	database = 'library.db'
 	try:
-		conn = sqlite3.connect(db_file)
+		conn = sqlite3.connect(database)
 		return conn
 	except Error:
 		print(Error)
@@ -23,10 +24,33 @@ def addBook(conn, log):
 	conn.commit()
 
 def addMovie(conn, log):
-	sql = ''' INSERT INTO MOVIE(TITLE, DIRECTOR, RELEASED) VALUES(?,?,?)'''
+	sql = ''' INSERT INTO MOVIES(TITLE, DIRECTOR, RELEASED) VALUES(?,?,?)'''
 	cur = conn.cursor()
 	cur.execute(sql, log)
 	conn.commit()
+
+def allBooks():
+
+	cur = conn.cursor()
+	if conn is not None:
+		cur.execute('SELECT Title, Author, Published FROM BOOKS')
+		library = cur.fetchall()
+		library = json.dumps(library)
+	return library
+
+
+
+
+def allMovies():
+	database = 'library.sql'
+	conn = create_connection(database)
+	cur = conn.cursor()
+	if conn is not None:
+		cur.execute('SELECT Title, Director, Released FROM MOVIES')
+		library = cur.fetchall()
+		library = json.dumps(library)
+	return library
+
 
 def mainBook(title, author, published):
 	database = 'library.sql'
@@ -48,11 +72,11 @@ def mainBook(title, author, published):
 	return "book added"
 
 
-def main_movie(title, director, released):
+def mainMovie(title, director, released):
 	database = 'library.sql'
-	sql_create_movie_table = '''CREATE TABLE IF NOT EXISTS BOOKS (
+	sql_create_movie_table = '''CREATE TABLE IF NOT EXISTS MOVIES (
 								ID PRIMARY KEY,
-								TITLE TEXT NOT NULL,
+								TITLE TEXT NOT NULL UNIQUE,
 								DIRECTOR TEXT NOT NULL,
 								RELEASED INT NOT NULL);'''
 	
@@ -67,7 +91,4 @@ def main_movie(title, director, released):
 	conn.close()
 	return "movie added"
 
-#def searchBooks
-#def searchMovies
-# def viewBooks
-# def viewMovies
+#mainMovie('jaws', 'steven spielberg', '1975')

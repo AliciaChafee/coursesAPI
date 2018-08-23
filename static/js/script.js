@@ -1,10 +1,12 @@
 $(document).ready(function() {
 
+// Home Page ******************************
 
 	$('#newBookForm').hide();
 	$('#newMovieForm').hide();
 	$('#book-added-response').hide();
 	$('#movie-added-response').hide();
+
 
 	$('#addMovie').on('click', function() {
 		$('#newBookForm').hide();
@@ -16,30 +18,126 @@ $(document).ready(function() {
 		$('#newBookForm').show();
 	});
 
+
+// Books Page *************************
+
+	// Add new book to library database
+	$("#bookTableDiv").hide();
+
 	$('#submitBook').on('click', function() {
 		var bookTitle = $('#newBookTitle').val().toUpperCase();
 		var bookAuthor = $('#author').val().toUpperCase();
 		var bookYear = $('#yearPublished').val();
 
-		console.log(bookTitle);
-		console.log(bookAuthor);
-		console.log(bookYear);
+		var url = "/book/" + bookTitle;
 
 		$.ajax({
-			data: { title : bookTitle, author: bookAuthor, year: bookYear },
+			data: { title : bookTitle, author: bookAuthor, published: bookYear },
 			type: 'POST',
-			url: 'addBook',
+			url: url,
 			dataType: 'json',
 			success: function(response){
-				$('#book-added-response').show();
+				console.log("response: " + response);
+				console.log("Success adding book");
+				//$('#book-added-response').show();
 
 
 			},
-			error: function(response) {
-				console.log(response);
+			error: function(error) {
+				console.log("Error adding book: " + error);
 			}
 		});
 		
+	});
+
+	// View all books in library database
+
+	$("#viewBooks").on('click', function() {
+
+		$("#books-body").empty();
+		$("#bookTableDiv").toggle();
+
+		
+			$.ajax({
+				type: 'GET',
+				url: 'v1/resources/books/all',
+				dataType: 'json',
+				success: function(response){
+					td = "<td>";
+					etd = "</td>";
+					tr = "<tr>";
+					etr = "</tr>";
+
+					for (var i = 0; i < response.length; i++){
+						rows = tr;
+						rows += td + response[i].rowid + etd;
+						rows += td + response[i].title + etd;
+						rows += td + response[i].author + etd;
+						rows += td + response[i].published + etd;
+						rows += etr;
+						
+						$("#books-body").append(rows);
+					}
+
+
+
+				}
+			});
+	});
+
+
+// Movies Page ***************
+
+	// Add new movie to library database
+
+	$('#submitMovie').on('click', function() {
+		var movieTitle = $('#newMovieTitle').val().toUpperCase();
+		var movieDirector = $('#director').val().toUpperCase();
+		var movieYear = $('#yearReleased').val();
+
+		console.log(movieTitle);
+		console.log(movieDirector);
+		console.log(movieYear);
+
+		var url = "/movie/" + movieTitle;
+
+		console.log(url);
+
+		$.ajax({
+			data: { title : movieTitle, director: movieDirector, released: movieYear },
+			type: 'POST',
+			url: url,
+			dataType: 'json',
+			success: function(response){
+				console.log("response" + response);
+				console.log("Success adding movie");
+				$('#movie-added-response').show();
+
+
+			},
+			error: function(error) {
+				console.log("Error adding movie: " + error);
+			}
+		});
+		
+	});
+
+	// View all movies in library database
+
+	$("#movies-table").hide();
+
+	$("#viewMovies").on('click', function() {
+		$("#movies-body").empty();
+		$("#movies-table").toggle();
+		
+			$.ajax({
+				type: 'GET',
+				url: 'movies',
+				success: function(response){
+					console.log(response);
+					$("#movies-body").append(response);
+				}
+			});
 	});
 
 
