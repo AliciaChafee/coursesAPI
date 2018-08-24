@@ -1,8 +1,9 @@
 import sqlite3
 import json
 
+database = 'library.db'
+
 def create_connection():
-	database = 'library.db'
 	try:
 		conn = sqlite3.connect(database)
 		return conn
@@ -42,7 +43,6 @@ def allBooks():
 
 
 def allMovies():
-	database = 'library.sql'
 	conn = create_connection(database)
 	cur = conn.cursor()
 	if conn is not None:
@@ -53,7 +53,6 @@ def allMovies():
 
 
 def mainBook(title, author, published):
-	database = 'library.sql'
 	sql_create_book_table = '''CREATE TABLE IF NOT EXISTS BOOKS (
 								ID PRIMARY KEY,
 								TITLE TEXT NOT NULL UNIQUE,
@@ -73,7 +72,6 @@ def mainBook(title, author, published):
 
 
 def mainMovie(title, director, released):
-	database = 'library.sql'
 	sql_create_movie_table = '''CREATE TABLE IF NOT EXISTS MOVIES (
 								ID PRIMARY KEY,
 								TITLE TEXT NOT NULL UNIQUE,
@@ -91,4 +89,5 @@ def mainMovie(title, director, released):
 	conn.close()
 	return "movie added"
 
-#mainMovie('jaws', 'steven spielberg', '1975')
+#def deleteBook(number):
+
