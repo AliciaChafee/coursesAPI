@@ -6,8 +6,8 @@ import sqlite3
 database = 'library.db'
 conn = sqlite3.connect(database)
 cursor = conn.cursor()
-cursor.execute('CREATE TABLE IF NOT EXISTS books  (title VARCHAR NOT NULL, author VARCHAR NOT NULL, published INT)')
-cursor.execute('CREATE TABLE IF NOT EXISTS movies (title VARCHAR NOT NULL, director VARCHAR NOT NULL, released INT)')
+cursor.execute('CREATE TABLE IF NOT EXISTS books  (title VARCHAR NOT NULL UNIQUE, author VARCHAR NOT NULL, published INT)')
+cursor.execute('CREATE TABLE IF NOT EXISTS movies (title VARCHAR NOT NULL UNIQUE, director VARCHAR NOT NULL, released INT)')
 conn.commit()
 conn.close()
 
