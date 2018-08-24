@@ -23,6 +23,7 @@ def make_dict(cursor, row):
 		d[col[0]] = row[idx]
 	return d
 
+
 # Gets list of all books
 
 @app.route('/api/v1/resources/books/all')
@@ -92,67 +93,109 @@ def get_book():
 
 @app.route('/api/v1/resources/movies')
 def get_movie():
-	query_parameters = request.args
-	released = query_parameters.get('released')
-	director = query_parameters.get('director')
-	title = query_parameters.get('title')
-	query = "SELECT * FROM movies WHERE"
-	to_filter = []
-	if title:
-		query += ' title=? AND'
-		to_filter.append(title.upper())
-	if released:
-		query += ' released=? AND'
-		to_filter.append(request.upper())
-	if director:
-		query += ' director=? AND'
-		to_filter.append(director.upper())
-	if not (title or director or released):
-		return page_not_found(404)
+	try:
+		query_parameters = request.args
+		released = query_parameters.get('released')
+		director = query_parameters.get('director')
+		title = query_parameters.get('title')
+		query = "SELECT * FROM movies WHERE"
+		to_filter = []
+		if title:
+			query += ' title=? AND'
+			to_filter.append(title.upper())
+		if released:
+			query += ' released=? AND'
+			to_filter.append(request.upper())
+		if director:
+			query += ' director=? AND'
+			to_filter.append(director.upper())
+		if not (title or director or released):
+			return page_not_found(404)
 
-	query = query[:-4] + ';'
-	conn = sqlite3.connect(database)
-	conn.row_factory = make_dict
-	cursor = conn.cursor()
+		query = query[:-4] + ';'
+		conn = sqlite3.connect(database)
+		conn.row_factory = make_dict
+		cursor = conn.cursor()
 
-	results = cursor.execute(query, to_filter).fetchall()
+		results = cursor.execute(query, to_filter).fetchall()
 
-	return jsonify(results)
+		return jsonify(results)
+	except:
+		return "Please enter a query string for 'title', 'author', or 'published'"
 
 # Posts new book to database
 
 @app.route('/v1/resources/books/newbook', methods = ['POST', 'GET'])
 def add_book():
-	title = request.form['bookTitle']
-	title = title.upper()
-	author = request.form['bookAuthor']
-	author = author.upper()
-	published = request.form['bookPublished']
-	published = int(published)
-	conn = sqlite3.connect(database)
-	cur = conn.cursor()
-	cur.execute("INSERT INTO books (title,author,published) VALUES (?,?,?)",(title, author, published) )
-	conn.commit()
-	flash('New book added to library!')
-	return redirect(url_for('home'))
-	conn.close()
+	try:
+		title = request.form['bookTitle']
+		title = title.upper()
+		author = request.form['bookAuthor']
+		author = author.upper()
+		published = request.form['bookPublished']
+		published = int(published)
+		conn = sqlite3.connect(database)
+		cursor = conn.cursor()
+		cursor.execute("INSERT INTO books (title,author,published) VALUES (?,?,?)",(title, author, published) )
+		conn.commit()
+		flash('New book added to library!')
+		return redirect(url_for('home'))
+		conn.close()
+	except:
+		return "error, click <a href='/home'>here</a> to return to the homepage."
+
 
 # Posts new movie to database
 
 @app.route('/v1/resources/movies/newmovie', methods = ['POST', 'GET'])
 def add_movie():
-	title = request.form['movieTitle']
-	title = title.upper()
-	director = request.form['movieDirector']
-	director = director.upper()
-	released = request.form['yearReleased']
-	conn = sqlite3.connect(database)
-	cur = conn.cursor()
-	cur.execute("INSERT INTO movies (title,director,released) VALUES (?,?,?)",(title, director, released) )
-	conn.commit()
-	flash('New movie added to library!')
-	return redirect(url_for('home'))
-	conn.close()
+	try:
+		title = request.form['movieTitle']
+		title = title.upper()
+		director = request.form['movieDirector']
+		director = director.upper()
+		released = request.form['yearReleased']
+		conn = sqlite3.connect(database)
+		cursor = conn.cursor()
+		cursor.execute("INSERT INTO movies (title,director,released) VALUES (?,?,?)",(title, director, released) )
+		conn.commit()
+		flash('New movie added to library!')
+		return redirect(url_for('home'))
+		conn.close()
+	except:
+		return "error, click <a href='/home'>here</a> to return to the homepage."
+
+
+@app.route('/delete/book', methods = ['POST', 'GET'])
+def delete_book():
+	try:
+		query_parameters = request.args
+		rowid = query_parameters.get('num')
+		conn = sqlite3.connect(database, isolation_level=None)
+		cursor = conn.cursor()
+		cursor.execute("DELETE FROM books WHERE rowid =" + rowid + ";")
+		conn.commit()
+		cursor.execute("VACUUM")
+		return "book deleted, <a href='/home'>Back to Home</a>"
+		conn.close()
+	except:
+		return "error, click <a href='/home'>here</a> to return to the homepage."
+
+@app.route('/delete/movie', methods = ['POST', 'GET'])
+def delete_movie():
+	try:
+		query_parameters = request.args
+		rowid = query_parameters.get('num')
+		conn = sqlite3.connect(database)
+		cursor = conn.cursor()
+		cursor.execute("DELETE FROM movies WHERE rowid =" + rowid + ";")
+		conn.commit()
+		return "movie deleted, <a href='/home'>Back to Home</a>"
+		conn.close()
+	except:
+		return "error, click <a href='/home'>here</a> to return to the homepage."
+
+
 
 
 @app.route('/home')
@@ -170,7 +213,7 @@ def booksPage():
 
 @app.errorhandler(404)
 def page_not_found(e):
-	return "<h1>404</h1><p>The resource could not be found.</p>", 404
+	return "<h1>404</h1><p>The resource could not be found. <a href='/home'>Homepage</a></p>", 404
 
 
 
