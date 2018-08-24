@@ -23,59 +23,71 @@ def make_dict(cursor, row):
 		d[col[0]] = row[idx]
 	return d
 
-
+# Gets list of all books
 
 @app.route('/api/v1/resources/books/all')
 def all_books():
-	conn = sqlite3.connect(database)
-	conn.row_factory = make_dict
-	cursor = conn.cursor()
-	all_books = cursor.execute('SELECT *, rowid FROM books').fetchall()
-	return jsonify(all_books)
+	try:
+		conn = sqlite3.connect(database)
+		conn.row_factory = make_dict
+		cursor = conn.cursor()
+		all_books = cursor.execute('SELECT *, rowid FROM books').fetchall()
+		return jsonify(all_books)
+	except:
+		return "Error, please try again."
 
+
+
+# Gets list of all movies
 
 @app.route('/api/v1/resources/movies/all')
 def all_movies():
-	conn = sqlite3.connect(database)
-	conn.row_factory = make_dict
-	cursor = conn.cursor()
-	all_movies = cursor.execute('SELECT *, rowid FROM movies').fetchall()
-	return jsonify(all_movies)
-	
+	try:
+		conn = sqlite3.connect(database)
+		conn.row_factory = make_dict
+		cursor = conn.cursor()
+		all_movies = cursor.execute('SELECT *, rowid FROM movies').fetchall()
+		return jsonify(all_movies)
+	except:
+		return "Error, please try again."
 
-
+# Gets book requested by title in books page and api can be searched by title, author, published
 
 @app.route('/api/v1/resources/books')
 def get_book():
-	query_parameters = request.args
-	published = query_parameters.get('published')
-	author = query_parameters.get('author')
-	title = query_parameters.get('title')
-	query = "SELECT * FROM books WHERE"
-	to_filter = []
-	if title:
-		query += ' title=? AND'
-		to_filter.append(title)
-	if published:
-		query += ' published=? AND'
-		to_filter.append(published)
-	if author:
-		query += ' author=? AND'
-		to_filter.append(author)
-	if not (title or published or author):
-		return page_not_found(404)
+	try:
+		query_parameters = request.args
+		published = query_parameters.get('published')
+		author = query_parameters.get('author')
+		title = query_parameters.get('title')
+		query = "SELECT * FROM books WHERE"
+		to_filter = []
+		if title:
+			query += ' title=? AND'
+			to_filter.append(title.upper())
+		if published:
+			query += ' published=? AND'
+			to_filter.append(published.upper())
+		if author:
+			query += ' author=? AND'
+			to_filter.append(author.upper())
+		if not (title or published or author):
+			return page_not_found(404)
 
-	query = query[:-4] + ';'
-	conn = sqlite3.connect(database)
-	conn.row_factory = make_dict
-	cursor = conn.cursor()
+		query = query[:-4] + ';'
+		conn = sqlite3.connect(database)
+		conn.row_factory = make_dict
+		cursor = conn.cursor()
 
-	results = cursor.execute(query, to_filter).fetchall()
+		results = cursor.execute(query, to_filter).fetchall()
 
-	return jsonify(results)
+		return jsonify(results)
+	except:
+		return "Error. Please try again."
 
 
 
+# Gets movie requested by title in movies page and api can be searched by title, director, released
 
 
 @app.route('/api/v1/resources/movies')
@@ -88,13 +100,13 @@ def get_movie():
 	to_filter = []
 	if title:
 		query += ' title=? AND'
-		to_filter.append(title)
+		to_filter.append(title.upper())
 	if released:
 		query += ' released=? AND'
-		to_filter.append(request)
+		to_filter.append(request.upper())
 	if director:
 		query += ' director=? AND'
-		to_filter.append(director)
+		to_filter.append(director.upper())
 	if not (title or director or released):
 		return page_not_found(404)
 
@@ -107,7 +119,7 @@ def get_movie():
 
 	return jsonify(results)
 
-
+# Posts new book to database
 
 @app.route('/v1/resources/books/newbook', methods = ['POST', 'GET'])
 def add_book():
@@ -124,6 +136,8 @@ def add_book():
 	flash('New book added to library!')
 	return redirect(url_for('home'))
 	conn.close()
+
+# Posts new movie to database
 
 @app.route('/v1/resources/movies/newmovie', methods = ['POST', 'GET'])
 def add_movie():
