@@ -142,7 +142,8 @@ def add_book():
 		return redirect(url_for('home'))
 		conn.close()
 	except:
-		return "error, click <a href='/home'>here</a> to return to the homepage."
+		flash("Error entering book. Please make sure it is not already in the libary.")
+		return redirect(url_for('home'))
 
 
 # Posts new movie to database
@@ -163,7 +164,8 @@ def add_movie():
 		return redirect(url_for('home'))
 		conn.close()
 	except:
-		return "error, click <a href='/home'>here</a> to return to the homepage."
+		flash('Error entering movie. Please make sure it is not already in the libary.')
+		return redirect(url_for('home'))
 
 
 @app.route('/delete/book', methods = ['POST', 'GET'])
@@ -190,6 +192,7 @@ def delete_movie():
 		cursor = conn.cursor()
 		cursor.execute("DELETE FROM movies WHERE rowid =" + rowid + ";")
 		conn.commit()
+		cursor.execute("VACUUM")
 		return "movie deleted, <a href='/home'>Back to Home</a>"
 		conn.close()
 	except:
