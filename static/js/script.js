@@ -4,8 +4,6 @@ $(document).ready(function() {
 
 	$('#newBookForm').hide();
 	$('#newMovieForm').hide();
-	$('#book-added-response').hide();
-	$('#movie-added-response').hide();
 
 
 	$('#addMovie').on('click', function() {
@@ -21,124 +19,150 @@ $(document).ready(function() {
 
 // Books Page *************************
 
-	// Add new book to library database
+
 	$("#bookTableDiv").hide();
-
-	$('#submitBook').on('click', function() {
-		var bookTitle = $('#newBookTitle').val().toUpperCase();
-		var bookAuthor = $('#author').val().toUpperCase();
-		var bookYear = $('#yearPublished').val();
-
-		var url = "/book/" + bookTitle;
-
-		$.ajax({
-			data: { title : bookTitle, author: bookAuthor, published: bookYear },
-			type: 'POST',
-			url: url,
-			dataType: 'json',
-			success: function(response){
-				console.log("response: " + response);
-				console.log("Success adding book");
-				//$('#book-added-response').show();
-
-
-			},
-			error: function(error) {
-				console.log("Error adding book: " + error);
-			}
-		});
-		
-	});
+	$('#bookSearchDiv').hide();
 
 	// View all books in library database
 
 	$("#viewBooks").on('click', function() {
-
+		$('#bookSearchDiv').hide();
 		$("#books-body").empty();
 		$("#bookTableDiv").toggle();
 
-		
-			$.ajax({
-				type: 'GET',
-				url: 'v1/resources/books/all',
-				dataType: 'json',
-				success: function(response){
-					td = "<td>";
-					etd = "</td>";
-					tr = "<tr>";
-					etr = "</tr>";
+		$.ajax({
+			type: 'GET',
+			url: 'api/v1/resources/books/all',
+			dataType: 'json',
+			success: function(response){
+				td = "<td>";
+				etd = "</td>";
+				tr = "<tr>";
+				etr = "</tr>";
 
-					for (var i = 0; i < response.length; i++){
-						rows = tr;
-						rows += td + response[i].rowid + etd;
-						rows += td + response[i].title + etd;
-						rows += td + response[i].author + etd;
-						rows += td + response[i].published + etd;
-						rows += etr;
-						
-						$("#books-body").append(rows);
-					}
-
-
-
+				for (var i = 0; i < response.length; i++){
+					rows = tr;
+					rows += td + response[i].rowid + etd;
+					rows += td + response[i].title + etd;
+					rows += td + response[i].author + etd;
+					rows += td + response[i].published + etd;
+					rows += etr;
+					
+					$("#books-body").append(rows);
 				}
-			});
+			}
+		});
+	});
+
+	// Search for book title
+
+	$(".search-books").on('click', function() {
+		$("#bookTableDiv").hide();
+		$('#book-search-body').empty();
+
+		var titleSearch = $('#titleSearch').val().toUpperCase();
+
+		
+		$.ajax({
+			type: 'GET',
+			data: { title : titleSearch },
+			url: 'api/v1/resources/books',
+			dataType: 'json',
+			success: function(response){
+				console.log(response.length);
+				td = "<td>";
+				etd = "</td>";
+				tr = "<tr>";
+				etr = "</tr>";
+
+				for (var i = 0; i < response.length; i++){
+					rows = tr;
+					rows += td + response[i].title + etd;
+					rows += td + response[i].author + etd;
+					rows += td + response[i].published + etd;
+					rows += etr;
+					
+					$("#book-search-body").append(rows);
+					$('#bookSearchDiv').show();
+				}
+			}
+		});
 	});
 
 
 // Movies Page ***************
 
-	// Add new movie to library database
 
-	$('#submitMovie').on('click', function() {
-		var movieTitle = $('#newMovieTitle').val().toUpperCase();
-		var movieDirector = $('#director').val().toUpperCase();
-		var movieYear = $('#yearReleased').val();
-
-		console.log(movieTitle);
-		console.log(movieDirector);
-		console.log(movieYear);
-
-		var url = "/movie/" + movieTitle;
-
-		console.log(url);
-
-		$.ajax({
-			data: { title : movieTitle, director: movieDirector, released: movieYear },
-			type: 'POST',
-			url: url,
-			dataType: 'json',
-			success: function(response){
-				console.log("response" + response);
-				console.log("Success adding movie");
-				$('#movie-added-response').show();
-
-
-			},
-			error: function(error) {
-				console.log("Error adding movie: " + error);
-			}
-		});
-		
-	});
+	$("#moviesTableDiv").hide();
+	$('#movieSearchDiv').hide();
 
 	// View all movies in library database
 
-	$("#movies-table").hide();
-
 	$("#viewMovies").on('click', function() {
+		$('#movieSearchDiv').hide();
 		$("#movies-body").empty();
-		$("#movies-table").toggle();
-		
-			$.ajax({
-				type: 'GET',
-				url: 'movies',
-				success: function(response){
-					console.log(response);
-					$("#movies-body").append(response);
+		$("#moviesTableDiv").toggle();
+
+		$.ajax({
+			type: 'GET',
+			url: 'api/v1/resources/movies/all',
+			dataType: 'json',
+			success: function(response){
+				td = "<td>";
+				etd = "</td>";
+				tr = "<tr>";
+				etr = "</tr>";
+
+				for (var i = 0; i < response.length; i++){
+					rows = tr;
+					rows += td + response[i].rowid + etd;
+					rows += td + response[i].title + etd;
+					rows += td + response[i].director + etd;
+					rows += td + response[i].released + etd;
+					rows += etr;
+					
+					$("#movies-body").append(rows);
 				}
-			});
+			}
+		});
 	});
+
+	// Search for movie title
+
+	$(".search-movies").on('click', function() {
+		$("#moviesTableDiv").hide();
+		$('#movie-search-body').empty();
+
+		var movieTitleSearch = $('#movieTitleSearch').val().toUpperCase();
+
+		
+		$.ajax({
+			type: 'GET',
+			data: { title : movieTitleSearch },
+			url: 'api/v1/resources/movies',
+			dataType: 'json',
+			success: function(response){
+				console.log(response);
+				td = "<td>";
+				etd = "</td>";
+				tr = "<tr>";
+				etr = "</tr>";
+
+				for (var i = 0; i < response.length; i++){
+					rows = tr;
+					rows += td + response[i].title + etd;
+					rows += td + response[i].director + etd;
+					rows += td + response[i].released + etd;
+					rows += etr;
+					console.log(rows);
+					
+					$("#movie-search-body").append(rows);
+					$('#movieSearchDiv').show();
+				}
+			}
+		});
+	});
+
 
 
 });

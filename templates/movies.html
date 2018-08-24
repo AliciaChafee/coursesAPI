@@ -25,9 +25,9 @@
 
 
     <div class="input-group mb-3 w-50 mx-auto my-5">
-      <input type="text" class="form-control" placeholder="Enter a title" aria-label="Enter a title" aria-describedby="button-addon2">
+      <input type="text" class="form-control" placeholder="Enter a title" aria-label="Enter a title" aria-describedby="button-addon2" id="movieTitleSearch">
       <div class="input-group-append">
-        <button class="btn btn-outline-dark" type="button" id="button-addon2 search-movies">Search Movies</button>
+        <button class="btn btn-outline-dark search-movies" type="button" id="button-addon2">Search Movies</button>
       </div>
     </div>
 
@@ -36,8 +36,25 @@
     </div>
 
 
-    <div class="mx-auto my-5 w-50" id="allMoviesTable">
+    <div class="mx-auto my-5 w-50" id="moviesTableDiv">
       <table class="table table-dark table-striped text-center" id="movies-table">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Title</th>
+            <th scope="col">Director</th>
+            <th scope="col">Year Released</th>
+          </tr>
+        </thead>
+        <tbody id="movies-body">
+          
+        </tbody>
+      </table>
+      
+    </div>
+
+    <div class="mx-auto my-5 w-50" id="movieSearchDiv">
+      <table class="table table-dark table-striped text-center" id="movieSearchTable">
         <thead>
           <tr>
             <th scope="col">Title</th>
@@ -45,7 +62,8 @@
             <th scope="col">Year Released</th>
           </tr>
         </thead>
-        <tbody id="movies-body">
+        <tbody id="movie-search-body">
+          
           
         </tbody>
       </table>

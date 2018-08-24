@@ -33,14 +33,6 @@ def all_books():
 	all_books = cursor.execute('SELECT *, rowid FROM books').fetchall()
 	return jsonify(all_books)
 
-@app.route('/v1/resources/books/all')
-def view_all_books():
-	conn = sqlite3.connect(database)
-	conn.row_factory = make_dict
-	cursor = conn.cursor()
-	all_books = cursor.execute('SELECT *, rowid FROM books').fetchall()
-	return jsonify(all_books)
-
 
 @app.route('/api/v1/resources/movies/all')
 def all_movies():
@@ -92,7 +84,7 @@ def get_movie():
 	released = query_parameters.get('released')
 	director = query_parameters.get('director')
 	title = query_parameters.get('title')
-	query = "SELECT * FROM books WHERE"
+	query = "SELECT * FROM movies WHERE"
 	to_filter = []
 	if title:
 		query += ' title=? AND'
@@ -120,7 +112,9 @@ def get_movie():
 @app.route('/v1/resources/books/newbook', methods = ['POST', 'GET'])
 def add_book():
 	title = request.form['bookTitle']
+	title = title.upper()
 	author = request.form['bookAuthor']
+	author = author.upper()
 	published = request.form['bookPublished']
 	published = int(published)
 	conn = sqlite3.connect(database)
@@ -134,7 +128,9 @@ def add_book():
 @app.route('/v1/resources/movies/newmovie', methods = ['POST', 'GET'])
 def add_movie():
 	title = request.form['movieTitle']
+	title = title.upper()
 	director = request.form['movieDirector']
+	director = director.upper()
 	released = request.form['yearReleased']
 	conn = sqlite3.connect(database)
 	cur = conn.cursor()
